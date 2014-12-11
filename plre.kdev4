@@ -1,0 +1,4 @@
+[Project]
+Name=plre
+Manager=KDevCMakeManager
+VersionControl=kdevgit
