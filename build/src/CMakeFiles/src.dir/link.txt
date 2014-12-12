@@ -1,1 +1,0 @@
-/usr/bin/c++   -std=c++11 -g -Wall -Wextra -g    CMakeFiles/src.dir/ast.cpp.o CMakeFiles/src.dir/str_convert.cpp.o  -o src -rdynamic 

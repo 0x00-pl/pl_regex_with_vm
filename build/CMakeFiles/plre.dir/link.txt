@@ -1,1 +1,0 @@
-/usr/bin/c++   -std=c++11 -g -Wall -Wextra -g    CMakeFiles/plre.dir/test.cpp.o CMakeFiles/plre.dir/src/ast.cpp.o CMakeFiles/plre.dir/src/str_convert.cpp.o  -o plre -rdynamic 
