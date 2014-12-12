@@ -1,0 +1,1 @@
+/home/pl/Documents/kdevelop/plre/build/CMakeFiles/plre.dir

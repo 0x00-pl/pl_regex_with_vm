@@ -1,0 +1,34 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/pl/Documents/kdevelop/plre/src/ast.cpp
+ast.h
+/home/pl/Documents/kdevelop/plre/src/ast.h
+limits
+-
+
+/home/pl/Documents/kdevelop/plre/src/ast.h
+vector
+-
+iostream
+-
+str_convert.h
+/home/pl/Documents/kdevelop/plre/src/str_convert.h
+
+/home/pl/Documents/kdevelop/plre/src/str_convert.cpp
+str_convert.h
+/home/pl/Documents/kdevelop/plre/src/str_convert.h
+exception
+-
+
+/home/pl/Documents/kdevelop/plre/src/str_convert.h
+iostream
+-
+string
+-
+

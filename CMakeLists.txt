@@ -1,6 +1,14 @@
 cmake_minimum_required(VERSION 2.6)
 project(plre)
+SET(CMAKE_CXX_FLAGS "-std=c++11 -g -Wall -Wextra")
 
-add_executable(plre main.cpp)
 
-install(TARGETS plre RUNTIME DESTINATION bin)
+#install(TARGETS plre RUNTIME DESTINATION bin)
+
+add_subdirectory(src)
+
+add_executable(plre 
+test.cpp 
+src/ast.cpp 
+src/str_convert.cpp
+)
