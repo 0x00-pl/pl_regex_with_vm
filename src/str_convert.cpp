@@ -131,7 +131,7 @@ c_ustr::c_ustr(uint32_t* _base, size_t _size){
 
 c_ustr::c_ustr(string s):c_ustr(s.c_str(),s.c_str()+s.size()){}
 
-void c_ustr::set(uint32_t* _base, size_t _size){
+void c_ustr::set_value(uint32_t* _base, size_t _size){
   delete[] base;
   
   base= new uint32_t[_size];

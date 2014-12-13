@@ -8,7 +8,10 @@ SET(CMAKE_CXX_FLAGS "-std=c++11 -g -Wall -Wextra")
 add_subdirectory(src)
 
 add_executable(plre 
-test.cpp 
 src/ast.cpp 
+src/il.cpp
+src/regex.cpp
 src/str_convert.cpp
+src/vm.cpp
+test.cpp 
 )

@@ -1,4 +1,5 @@
 #pragma once
+#include "debug.h"
 #include <iostream>
 #include <string>
 using namespace std;
@@ -14,12 +15,23 @@ public:
   size_t size;
   c_ustr(const char* s, const char* s_end);
   c_ustr(string s);
+  c_ustr(const c_ustr& cu){
+    base=nullptr;
+    set_value(cu.base, cu.size);
+  }
   c_ustr(uint32_t* _base, size_t _size);
   c_ustr(){ base=nullptr; size=0; }
   ~c_ustr(){ delete[] base; size=0; }
-  bool is_null(){return base==nullptr;}
+  
+  bool is_null(){return base==nullptr;}  
   uint32_t operator[](size_t p){return base[p];}
-  void set(uint32_t* _base, size_t _size);
+  c_ustr& operator=(const c_ustr& v){
+    if(this==&v)return *this;
+    set_value(v.base, v.size);
+    return *this;
+  }
+  void set_value(uint32_t* _base, size_t _size);
+  
   void print(ostream& s){
     size_t cstr_size=0;
     for(size_t i=0; i<size; i++){

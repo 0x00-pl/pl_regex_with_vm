@@ -1,6 +1,8 @@
 #pragma once
+#include "debug.h"
 #include <vector>
 #include <iostream>
+#include <map>
 #include "str_convert.h"
 
 using namespace std;
@@ -99,6 +101,7 @@ class ast_node_capture: public ast_node{
 public:
   vector<ast_node*> sub_branchs;
   size_t repeat_min, repeat_max;
+  int repeat_index;
   bool greedy;
   bool caret_mark;
   int group_index; // -1 is none
@@ -109,6 +112,7 @@ public:
     caret_mark=false;
     group_index=-1;
     repeat_min=repeat_max=1;
+    greedy= true;
   }
   ~ast_node_capture(){
     for(ast_node* i : sub_branchs) delete i;
@@ -117,4 +121,20 @@ public:
 };
 
 
-ast_node* ast_parse(c_ustr& str, size_t& pos);
+class ast_parse_global_state{
+public:
+  size_t capture_index;
+  size_t repeat_index;
+  bool at_square_bracket;
+  map<size_t, c_ustr> capture_id_name;
+  vector<size_t> loop_min;
+  vector<size_t> loop_max;
+  vector<bool> loop_greedy;
+  ast_parse_global_state(){
+    capture_index=0;
+    repeat_index=0;
+    at_square_bracket=false;
+  }
+};
+
+ast_node* ast_parse(c_ustr& str, size_t& pos, ast_parse_global_state& gst);

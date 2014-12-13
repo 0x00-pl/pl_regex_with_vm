@@ -3,20 +3,15 @@
 using namespace std;
 
 
-class ast_parse_global_state{
-public:
-  size_t capture_index;
-  bool at_square_bracket;
-};
 
 uint32_t read_digits(c_ustr& str, size_t& pos, int maxsize){
     uint32_t cc=0;
     while(maxsize==-1 || maxsize-->0){
       if(pos>=str.size) return 0;
       uint32_t cur_dig;
-      cc= cc*10;
       if('0'<=str[pos] && str[pos]<='9'){ cur_dig= str[pos]-'0'; }
       else {break;}
+      cc= cc*10;
       cc+= cur_dig;
       pos++;
     }
@@ -27,11 +22,11 @@ uint32_t read_xdigits(c_ustr& str, size_t& pos, int maxsize){
     while(maxsize==-1 || maxsize-->0){
       if(pos>=str.size) return 0;
       uint32_t cur_dig;
-      cc= cc*16;
       if('0'<=str[pos] && str[pos]<='9'){ cur_dig= str[pos]-'0'; }
       else if('A'<=str[pos] && str[pos]<='F'){ cur_dig= str[pos]-'A'; }
       else if('a'<=str[pos] && str[pos]<='f'){ cur_dig= str[pos]-'a'; }
       else {break;}
+      cc= cc*16;
       cc+= cur_dig;
       pos++;
     }
@@ -109,6 +104,8 @@ ast_node* ast_parse_char(c_ustr& str, size_t& pos, ast_parse_global_state& gst){
 }
 
 void ast_parse_repeat(c_ustr& str, size_t& pos, size_t& min, size_t& max, bool& greedy){
+  min=max=1;
+  if(pos>=str.size) return;
   switch(str[pos]){
     case '?':
       pos++;
@@ -143,8 +140,8 @@ void ast_parse_repeat(c_ustr& str, size_t& pos, size_t& min, size_t& max, bool& 
       pos++;
   }
   if(pos<str.size){
-    greedy= str[pos]=='?';
-    if(greedy) pos++;
+    greedy= str[pos]!='?';
+    if(!greedy) pos++;
   }
 }
 
@@ -156,6 +153,10 @@ ast_node* ast_parse_char_may_repeat(c_ustr& str, size_t& pos, ast_parse_global_s
     ast_node_capture* ch_repeat= new ast_node_capture;
     ch_repeat->sub_branchs.push_back(ch);
     ast_parse_repeat(str,pos, ch_repeat->repeat_min, ch_repeat->repeat_max, ch_repeat->greedy);
+    ch_repeat->repeat_index= gst.repeat_index++;
+    gst.loop_min.push_back(ch_repeat->repeat_min);
+    gst.loop_max.push_back(ch_repeat->repeat_max);
+    gst.loop_greedy.push_back(ch_repeat->greedy);
     return ch_repeat;
   }else{
     return ch;
@@ -207,7 +208,8 @@ ast_node_capture* ast_parse_capture(c_ustr& str, size_t& pos, ast_parse_global_s
 	      }
 	      name_size++;
 	    }
-	    ret->group_name.set(str.base+name_base, name_size); 
+	    ret->group_name.set_value(str.base+name_base, name_size); 
+	    gst.capture_id_name[ret->group_index]= ret->group_name;
 	    pos+= name_size;
 	    if(str[pos]!='>'){ throw "debug unknow"; }
 	    pos++;
@@ -230,6 +232,7 @@ ast_node_capture* ast_parse_capture(c_ustr& str, size_t& pos, ast_parse_global_s
   else if(str[pos]=='['){
     pos++;
     gst.at_square_bracket= true;
+    ret->group_index= -1;
     if(str[pos]=='^'){
       pos++;
       ret->caret_mark= true;
@@ -241,15 +244,17 @@ ast_node_capture* ast_parse_capture(c_ustr& str, size_t& pos, ast_parse_global_s
     }
   }
   ast_parse_repeat(str,pos, ret->repeat_min, ret->repeat_max, ret->greedy);
+  if(!(ret->repeat_min==1 && ret->repeat_max==1)){ 
+    ret->repeat_index= gst.repeat_index++; 
+    gst.loop_min.push_back(ret->repeat_min);
+    gst.loop_max.push_back(ret->repeat_max);
+    gst.loop_greedy.push_back(ret->greedy);
+  }
   gst.at_square_bracket= old_at_square_bracket;
   return ret;
 }
 
-ast_node* ast_parse(c_ustr& str, size_t& pos){
-  ast_parse_global_state gst;
-  gst.capture_index=0;
-  gst.at_square_bracket=false;
-  
+ast_node* ast_parse(c_ustr& str, size_t& pos, ast_parse_global_state& gst){  
   ast_node_capture* ret= new ast_node_capture;
   ret->group_index= gst.capture_index++;
   do{ 
