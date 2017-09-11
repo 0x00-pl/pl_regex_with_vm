@@ -39,3 +39,46 @@ int main(int argc, char **argv) {
   cout<<"match result: "<<res<<endl;
   return 0;
 }
+
+/*
+ 
+/a*abc?xyz+pqr{3}ab{2,}xy{4,5}pq{0,6}AB{0,}zz/
+    abxyzpqrrrabbxyyyypqAzz
+    abxyzpqrrrabbxyyyypqAzz
+    aabxyzpqrrrabbxyyyypqAzz
+    aaabxyzpqrrrabbxyyyypqAzz
+    aaaabxyzpqrrrabbxyyyypqAzz
+    abcxyzpqrrrabbxyyyypqAzz
+    aabcxyzpqrrrabbxyyyypqAzz
+    aaabcxyzpqrrrabbxyyyypAzz
+    aaabcxyzpqrrrabbxyyyypqAzz
+    aaabcxyzpqrrrabbxyyyypqqAzz
+    aaabcxyzpqrrrabbxyyyypqqqAzz
+    aaabcxyzpqrrrabbxyyyypqqqqAzz
+    aaabcxyzpqrrrabbxyyyypqqqqqAzz
+    aaabcxyzpqrrrabbxyyyypqqqqqqAzz
+    aaaabcxyzpqrrrabbxyyyypqAzz
+    abxyzzpqrrrabbxyyyypqAzz
+    aabxyzzzpqrrrabbxyyyypqAzz
+    aaabxyzzzzpqrrrabbxyyyypqAzz
+    aaaabxyzzzzpqrrrabbxyyyypqAzz
+    abcxyzzpqrrrabbxyyyypqAzz
+    aabcxyzzzpqrrrabbxyyyypqAzz
+    aaabcxyzzzzpqrrrabbxyyyypqAzz
+    aaaabcxyzzzzpqrrrabbxyyyypqAzz
+    aaaabcxyzzzzpqrrrabbbxyyyypqAzz
+    aaaabcxyzzzzpqrrrabbbxyyyyypqAzz
+    aaabcxyzpqrrrabbxyyyypABzz
+    aaabcxyzpqrrrabbxyyyypABBzz
+    >>>aaabxyzpqrrrabbxyyyypqAzz
+    >aaaabxyzpqrrrabbxyyyypqAzz
+    >>>>abcxyzpqrrrabbxyyyypqAzz
+    *** Failers
+    abxyzpqrrabbxyyyypqAzz
+    abxyzpqrrrrabbxyyyypqAzz
+    abxyzpqrrrabxyyyypqAzz
+    aaaabcxyzzzzpqrrrabbbxyyyyyypqAzz
+    aaaabcxyzzzzpqrrrabbbxyyypqAzz
+    aaabcxyzpqrrrabbxyyyypqqqqqqqAzz
+ 
+ */
